@@ -1,0 +1,30 @@
+{% extends "links/admin/base.html" %}
+
+{% block content %}
+  <div class="row">
+    <h1>Link: {{ link.short_id }}</h1>
+  </div>
+  <div class="row">
+    <ul>
+      <li><b>Destination</b>: {{ link.destination }}</li>
+      <li><b>Created at</b>: {{ link.created_at }}</li>
+    </ul>
+  </div>
+  <div class="row">
+    <a href="/links/delete/{{ link.pk }}" class="btn btn-danger btn-sm">
+      <span class="oi oi-trash"></span> Delete link
+    </a>
+  </div>
+  <div class="row">
+    <h2>Visits</h2>
+  </div>
+  <div class="row">
+    {% if visits %}
+      {% for visit in visits %}
+      {{ visit.id }}
+      {% endfor %}
+    {% else %}
+      <p>No visits yet.</p>
+    {% endif %}
+  </div>
+{% endblock %}

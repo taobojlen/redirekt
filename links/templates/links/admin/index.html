@@ -1,0 +1,53 @@
+{% extends "links/admin/base.html" %}
+{% block title %}redirekt{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="row">
+    <h1>Links</h1>
+  </div>
+  <div class="row mb-3">
+    <a class="btn btn-primary" href="/links/admin/create/">Create new link</a>
+  </div>
+  <div class="row">
+    {% if links %}
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead class="thead-light">
+          <tr>
+            <th>Created at</th>
+            <th>ID</th>
+            <th>Destination</th>
+            <th>Actions</th>
+          </tr>
+          </thead>
+          {% for link in links %}
+            <a href="{{ link.get_absolute_url }}">
+              <tr>
+                <td>{{ link.created_at }}</td>
+                <td>{{ link.short_id }}</td>
+                <td>{{ link.destination }}</td>
+                <td>
+                  <a class="btn btn-outline-secondary" href="{{ link.get_absolute_url }}" alt="View">
+                    <span class="oi oi-eye"></span>
+                  </a>
+                  <a class="btn btn-outline-danger" href="{{ link.get_absolute_url }}" alt="Delete">
+                    <span class="oi oi-trash"></span>
+                  </a>
+                </td>
+              </tr>
+            </a>
+          {% endfor %}
+
+        </table>
+      </div>
+    {% else %}
+      <div class="col-4 offset-4">
+        <div class="alert alert-secondary" role="alert">
+          No links found.
+        </div>
+      </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
