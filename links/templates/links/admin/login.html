@@ -1,0 +1,18 @@
+{% extends "redirekt/base.html" %} {% block content %}
+<div class="container d-flex h-100 justify-content-center">
+  <div class="row align-self-center">
+    <div class="card" style="width: 18rem;">
+      <div class="card-body">
+        <h5 class="card-title">Login</h5>
+        <form action="/links/admin/login/" method="post">
+          <div class="form-group">
+            {% csrf_token %} {{ form }}
+          </div>
+          <input class="btn btn-primary" type="submit" value="Log in" />
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
