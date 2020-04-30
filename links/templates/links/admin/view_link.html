@@ -2,7 +2,10 @@
 
 {% block content %}
   <div class="row">
-    <h1>Link: {{ link.short_id }}</h1>
+    <h1>
+      Link: {{ link.short_id }}
+      <small>{{ link.get_redirect_url }}</small>
+    </h1>
   </div>
   <div class="row">
     <ul>
@@ -20,9 +23,22 @@
   </div>
   <div class="row">
     {% if visits %}
+      <table class="table table-striped">
+        <thead class="thead-light">
+        <tr>
+          <th>Timestamp</th>
+          <th>User agent</th>
+          <th>IP</th>
+        </tr>
+      </thead>
       {% for visit in visits %}
-      {{ visit.id }}
+        <tr>
+          <td>{{ visit.created_at }}</td>
+          <td>{{ visit.user_agent }}</td>
+          <td>{{ visit.ip }}</td>
+        </tr>
       {% endfor %}
+      </table>
     {% else %}
       <p>No visits yet.</p>
     {% endif %}

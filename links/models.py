@@ -2,20 +2,26 @@ from django.db import models
 
 # Create your models here.
 class Link(models.Model):
-  short_id = models.CharField(max_length=6)
-  created_at = models.DateTimeField(auto_now_add=True)
-  destination = models.URLField()
+    created_at = models.DateTimeField(auto_now_add=True)
 
-  def __str__(self):
-    return "{} ({})".format(self.short_id, self.destination)
+    short_id = models.CharField(max_length=6)
+    destination = models.URLField()
 
-  def get_absolute_url(self):
-      from django.urls import reverse
-      return reverse('link-detail', kwargs={'pk': self.pk})
+    def __str__(self):
+        return "{} ({})".format(self.short_id, self.destination)
+
+    def get_absolute_url(self):
+        from django.urls import reverse
+        return reverse("link-detail", kwargs={"pk": self.pk})
+
+    def get_redirect_url(self):
+        from django.urls import reverse
+        return reverse('redirect', kwargs={'short_id': self.short_id})
 
 
 class Visit(models.Model):
-  link = models.ForeignKey(Link, on_delete=models.CASCADE)
-  timestamp = models.DateTimeField(auto_now_add=True)
-  user_agent = models.CharField(max_length=4000)
-  ip = models.CharField(max_length=45)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    link = models.ForeignKey(Link, on_delete=models.CASCADE)
+    user_agent = models.CharField(max_length=4000)
+    ip = models.CharField(max_length=45)
