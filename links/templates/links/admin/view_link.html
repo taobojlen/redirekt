@@ -3,12 +3,12 @@
 {% block content %}
   <div class="row">
     <h1>
-      Link: {{ link.short_id }}
-      <small>{{ link.get_redirect_url }}</small>
+      Link: {{ link.title }}
     </h1>
   </div>
   <div class="row">
     <ul>
+      <li><b>Short URL</b>: <a href="{{ link.get_redirect_url }}">{{ link.get_redirect_url }}</a></li>
       <li><b>Destination</b>: {{ link.destination }}</li>
       <li><b>Created at</b>: {{ link.created_at }}</li>
     </ul>
@@ -18,24 +18,40 @@
       <span class="oi oi-trash"></span> Delete link
     </a>
   </div>
-  <div class="row">
+  <div class="row mt-2">
     <h2>Visits</h2>
   </div>
   <div class="row">
     {% if visits %}
-      <table class="table table-striped">
+      <table class="table table-bordered">
         <thead class="thead-light">
         <tr>
           <th>Timestamp</th>
           <th>User agent</th>
           <th>IP</th>
+          <th>Hostname</th>
+          <th>Location</th>
+          <th>Coordinates</th>
+          <th>Fingerprint</th>
         </tr>
       </thead>
       {% for visit in visits %}
-        <tr>
+        {% if visit.is_bot %}
+          <tr class="table-secondary">
+        {% else %}
+          <tr>
+        {% endif %}
           <td>{{ visit.created_at }}</td>
-          <td>{{ visit.user_agent }}</td>
+          {% if visit.is_bot %}
+            <td>{{ visit.user_agent }} <span class="badge badge-pill badge-secondary">Bot</span></td>
+          {% else %}
+            <td>{{ visit.user_agent }}</td>
+          {% endif %}
           <td>{{ visit.ip }}</td>
+          <td>{{ visit.hostname }}</td>
+          <td>{{ visit.city }}, {{ visit.country }}</td>
+          <td>{{ visit.latitude }}, {{ visit.longitude }}</td>
+          <td>{{ visit.fingerprint }}</td>
         </tr>
       {% endfor %}
       </table>

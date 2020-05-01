@@ -3,6 +3,7 @@ from django import forms
 import re
 
 from .models import Link
+from .utils import get_random_short_id
 
 
 class AdminLoginForm(forms.Form):
@@ -15,7 +16,14 @@ class LinkForm(forms.ModelForm):
 
     class Meta:
         model = Link
-        fields = ["short_id", "destination"]
+        fields = ["title", "destination"]
+
+    def save(self, commit=True):
+        instance = super(LinkForm, self).save(commit=False)
+        instance.short_id = get_random_short_id()
+        if commit:
+            instance.save()
+        return instance
 
     def clean_short_id(self):
         data = self.cleaned_data['short_id']

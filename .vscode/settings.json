@@ -10,6 +10,11 @@
       "database": "${workspaceFolder}/db.sqlite3",
       "dialect": "SQLite",
       "name": "redirekt"
+    },
+    {
+      "database": "${workspaceFolder}/db.sqlite3",
+      "dialect": "SQLite",
+      "name": "redirekt"
     }
   ],
   "sqltools.useNodeRuntime": true

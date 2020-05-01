@@ -15,18 +15,22 @@
         <table class="table table-striped">
           <thead class="thead-light">
           <tr>
+            <th>Name</th>
             <th>Created at</th>
             <th>ID</th>
             <th>Destination</th>
+            <th>Visits</th>
             <th>Actions</th>
           </tr>
           </thead>
           {% for link in links %}
             <a href="{{ link.get_absolute_url }}">
               <tr>
+                <td>{{ link.title }}</td>
                 <td>{{ link.created_at }}</td>
                 <td>{{ link.short_id }}</td>
                 <td>{{ link.destination }}</td>
+                <td>{{ link.visit_set.count }}</td>
                 <td>
                   <a class="btn btn-outline-secondary" href="{{ link.get_absolute_url }}" alt="View">
                     <span class="oi oi-eye"></span>

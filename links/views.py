@@ -10,7 +10,7 @@ import logging
 
 from .forms import AdminLoginForm, LinkForm
 from .models import Link, Visit
-from .utils import is_authenticated
+from .utils import is_authenticated, is_bot, get_random_short_id
 
 # TODO
 PASSWORD = "mypass"
@@ -26,15 +26,26 @@ def redirect_to_destination(request, short_id):
     try:
         user_agent = request.META["HTTP_USER_AGENT"]
         client_ip, _is_routable = get_client_ip(request)
-        visit = Visit(link=link, user_agent=user_agent, ip=client_ip)
+        visit = Visit(
+            link=link,
+            user_agent=user_agent,
+            ip=client_ip,
+            is_bot=is_bot(user_agent),
+            city=request.ipinfo.city,
+            country=request.ipinfo.country,
+            hostname=request.ipinfo.hostname,
+            latitude=float(request.ipinfo.latitude),
+            longitude=float(request.ipinfo.longitude)
+        )
         visit.save()
-    except:
+    except Exception as e:
         # something went wrong but we don't want to alert the visitor...
         logging.error(
             "Failed to save visit to {}. IP: {}, UA: {}".format(
                 link, client_ip, user_agent
             )
         )
+        logging.error(e)
 
     return redirect(link.destination)
 
@@ -79,6 +90,7 @@ def create_link(request):
             link = form.save()
             return redirect(link)
     else:
+        # Generate random short ID as initial value
         form = LinkForm()
 
     return render(request, "links/admin/create_link.html", {"form": form})
