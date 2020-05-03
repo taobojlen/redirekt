@@ -2,7 +2,7 @@ from django import forms
 
 import re
 
-from .models import Link
+from links.models import Link
 from .utils import get_random_short_id
 
 
@@ -12,7 +12,7 @@ class AdminLoginForm(forms.Form):
 
 class LinkForm(forms.ModelForm):
 
-    RESTRICTED_VALUES = ["admin", "delete"]
+    RESTRICTED_VALUES = ["login", "create", "view", "delete"]
 
     class Meta:
         model = Link
@@ -26,7 +26,7 @@ class LinkForm(forms.ModelForm):
         return instance
 
     def clean_short_id(self):
-        data = self.cleaned_data['short_id']
+        data = self.cleaned_data["short_id"]
 
         if data in self.RESTRICTED_VALUES:
             raise ValidationError(

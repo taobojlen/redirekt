@@ -1,8 +1,8 @@
-{% extends "links/admin/base.html" %}
+{% extends "admin/base.html" %}
 {% load bootstrap4 %}
 
 {% block content %}
-  <form action="/links/admin/create/" method="post">
+  <form action="/admin/create/" method="post">
       {% csrf_token %}
       {% bootstrap_form form %}
       {% buttons %}

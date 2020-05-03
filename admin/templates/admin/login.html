@@ -1,4 +1,4 @@
-{% extends "links/admin/base.html" %}
+{% extends "admin/base.html" %}
 {% block title %}Login{% endblock %}
 
 {% block content %}
@@ -7,7 +7,7 @@
     <div class="card" style="width: 18rem;">
       <div class="card-body">
         <h5 class="card-title">Login</h5>
-        <form action="/links/admin/login/" method="post">
+        <form action="/admin/login/" method="post">
           <div class="form-group">
             {% csrf_token %} {{ form }}
           </div>

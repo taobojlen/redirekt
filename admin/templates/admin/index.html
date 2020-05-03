@@ -1,4 +1,4 @@
-{% extends "links/admin/base.html" %}
+{% extends "admin/base.html" %}
 {% block title %}redirekt{% endblock %}
 
 {% block content %}
@@ -7,7 +7,7 @@
     <h1>Links</h1>
   </div>
   <div class="row mb-3">
-    <a class="btn btn-primary" href="/links/admin/create/">Create new link</a>
+    <a class="btn btn-primary" href="/admin/create/">Create new link</a>
   </div>
   <div class="row">
     {% if links %}
@@ -35,7 +35,7 @@
                   <a class="btn btn-outline-secondary" href="{{ link.get_absolute_url }}" alt="View">
                     <span class="oi oi-eye"></span>
                   </a>
-                  <a class="btn btn-outline-danger" href="{{ link.get_absolute_url }}" alt="Delete">
+                  <a class="btn btn-outline-danger" href="{{ link.get_delete_url }}" alt="Delete">
                     <span class="oi oi-trash"></span>
                   </a>
                 </td>

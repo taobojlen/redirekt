@@ -14,11 +14,17 @@ class Link(models.Model):
 
     def get_absolute_url(self):
         from django.urls import reverse
+
         return reverse("link-detail", kwargs={"pk": self.pk})
+
+    def get_delete_url(self):
+        from django.urls import reverse
+        return reverse("delete-link", kwargs={'pk': self.pk})
 
     def get_redirect_url(self):
         from django.urls import reverse
-        return reverse('redirect', kwargs={'short_id': self.short_id})
+
+        return reverse("redirect", kwargs={"short_id": self.short_id})
 
 
 class Visit(models.Model):
@@ -40,12 +46,10 @@ class Visit(models.Model):
     longitude = models.FloatField(null=True)
 
     def save(self, *args, **kwargs):
-        fingerprint_fields = bytes(''.join([self.user_agent, self.ip]), encoding='utf8')
+        fingerprint_fields = bytes("".join([self.user_agent, self.ip]), encoding="utf8")
         self.fingerprint = sha1(fingerprint_fields).hexdigest()
         print(self.fingerprint)
         super().save(*args, **kwargs)  # Call the "real" save() method.
 
     class Meta:
-        indexes = [
-            models.Index(fields=['fingerprint'])
-        ]
+        indexes = [models.Index(fields=["fingerprint"])]

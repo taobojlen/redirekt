@@ -1,4 +1,4 @@
-{% extends "links/admin/base.html" %}
+{% extends "admin/base.html" %}
 
 {% block content %}
   <div class="row">
@@ -14,7 +14,7 @@
     </ul>
   </div>
   <div class="row">
-    <a href="/links/delete/{{ link.pk }}" class="btn btn-danger btn-sm">
+    <a href="/admin/delete/{{ link.pk }}" class="btn btn-danger btn-sm">
       <span class="oi oi-trash"></span> Delete link
     </a>
   </div>
