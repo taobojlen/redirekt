@@ -1,5 +1,11 @@
 {% extends "admin/base.html" %}
 
+{% block script %}
+  $(function () {
+    $('[data-toggle="popover"]').popover()
+  })
+{% endblock %}
+
 {% block content %}
   <div class="row">
     <h1>
@@ -11,6 +17,7 @@
       <li><b>Short URL</b>: <a href="{{ link.get_redirect_url }}">{{ link.get_redirect_url }}</a></li>
       <li><b>Destination</b>: {{ link.destination }}</li>
       <li><b>Created at</b>: {{ link.created_at }}</li>
+      <li><b>Collect extended data</b>: {{ link.collect_extended_data }}</li>
     </ul>
   </div>
   <div class="row">
@@ -32,6 +39,7 @@
           <th>Hostname</th>
           <th>Location</th>
           <th>Coordinates</th>
+          <th>More</th>
           <th>Fingerprint</th>
         </tr>
       </thead>
@@ -51,8 +59,47 @@
           <td>{{ visit.hostname }}</td>
           <td>{{ visit.city }}, {{ visit.country }}</td>
           <td>{{ visit.latitude }}, {{ visit.longitude }}</td>
+          <td>
+            <button type="button" class="btn btn-sm btn-link" data-toggle="modal" data-target="#modal{{ visit.pk }}">
+              More
+            </button>
+          </td>
           <td>{{ visit.fingerprint }}</td>
         </tr>
+        <div class="modal fade" id="modal{{ visit.pk }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">More details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <ul>
+                  <li><b>Webdriver</b>: {{ visit.webdriver }}</li>
+                  <li><b>Color depth</b>: {{ visit.color_depth }}</li>
+                  <li><b>Pixel ratio</b>: {{ visit.pixel_ratio }}</li>
+                  <li><b>Hardware concurrency</b>: {{ visit.hardware_concurrency }}</li>
+                  <li><b>Screen resolution</b>: {{ visit.screen_x }}x{{ visit.screen_y }}</li>
+                  <li><b>Available screen resolution</b>: {{ visit.available_screen_x }}x{{ visit.available_screen_y }}</li>
+                  <li><b>Timezone</b>: {{ visit.timezone }}</li>
+                  <li><b>sessionStorage</b>: {{ visit.session_storage }}</li>
+                  <li><b>localStorage</b>: {{ visit.local_storage }}</li>
+                  <li><b>indexedDb</b>: {{ visit.indexed_db }}</li>
+                  <li><b>addBehavior</b>: {{ visit.add_behavior }}</li>
+                  <li><b>openDatabase</b>: {{ visit.open_database }}</li>
+                  <li><b>Platform</b>: {{ visit.platform }}</li>
+                  <li><b>WebGL vendor and renderer</b>: {{ visit.webgl_vendor_and_renderer }}</li>
+                  <li><b>Touch support</b>: {{ visit.touch_support }}</li>
+                </ul>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
       {% endfor %}
       </table>
     {% else %}

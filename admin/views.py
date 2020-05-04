@@ -59,10 +59,8 @@ def create_link(request):
 
 def link_detail(request, pk):
     link = get_object_or_404(Link, pk=pk)
-    visits = link.visit_set.all()
-    return render(
-        request, "admin/view_link.html", {"link": link, "visits": visits}
-    )
+    visits = link.visit_set.order_by('-pk')
+    return render(request, "admin/view_link.html", {"link": link, "visits": visits})
 
 
 class DeleteLink(DeleteView, SuccessMessageMixin):

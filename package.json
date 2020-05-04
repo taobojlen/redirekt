@@ -1,0 +1,20 @@
+{
+  "name": "redirekt",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@gitlab.com:tao_oat/redirekt.git",
+  "author": "Tao Bojlén",
+  "license": "AGPL-3.0-or-later",
+  "devDependencies": {
+    "@types/fingerprintjs2": "^2.0.0",
+    "@types/lodash": "^4.14.150",
+    "ts-loader": "^7.0.2",
+    "typescript": "^3.8.3",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.11"
+  },
+  "dependencies": {
+    "fingerprintjs2": "^2.1.0",
+    "lodash": "^4.17.15"
+  }
+}

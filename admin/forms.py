@@ -16,7 +16,7 @@ class LinkForm(forms.ModelForm):
 
     class Meta:
         model = Link
-        fields = ["title", "destination"]
+        fields = ["title", "destination", "collect_extended_data"]
 
     def save(self, commit=True):
         instance = super(LinkForm, self).save(commit=False)

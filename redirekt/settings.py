@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "bootstrap4",
+    "django_extensions",
     "links",
     "admin",
 ]
@@ -50,7 +51,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    'ipinfo_django.middleware.IPinfo',
+    "ipinfo_django.middleware.IPinfo",
 ]
 
 ROOT_URLCONF = "redirekt.urls"
@@ -116,15 +117,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = "/static/"
-STATICFILES_DIRS = [os.path.join(BASE_DIR, "redirekt/static")]
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static/dist"),
+    os.path.join(BASE_DIR, "static/open-iconic"),
+]
 
 # Other dependencies
-IPINFO_TOKEN = os.environ['IPINFO_TOKEN']
-IPINFO_SETTINGS = {
-    'cache_options': {
-        'ttl':60,
-        'maxsize': 512
-    }
-}
+IPINFO_TOKEN = os.environ["IPINFO_TOKEN"]
+IPINFO_SETTINGS = {"cache_options": {"ttl": 60, "maxsize": 512}}
 # This can be used to filter out bots, but we want to see them
 IPINFO_FILTER = None

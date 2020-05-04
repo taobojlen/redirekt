@@ -1,7 +1,27 @@
-{% extends "redirekt/base.html" %}
+{% load static %}
+{% load bootstrap4 %}
 
-{% block navbar %}
-<nav class="navbar navbar-dark bg-dark">
-  <a href="/admin" class="navbar-brand mb-0 h1">redirekt</a>
-</nav>
-{% endblock %}
+<html lang="en">
+  <head>
+    <title>{% block title %}{% endblock %}</title>
+    <link href="{% static "css/open-iconic-bootstrap.min.css" %}" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    {% bootstrap_javascript jquery='full' %}
+    {% bootstrap_css %}
+    <script>
+      {% block script %}
+      {% endblock %}
+    </script>
+  </head>
+  <body>
+    <nav class="navbar navbar-dark bg-dark">
+      <a href="/admin" class="navbar-brand mb-0 h1">redirekt</a>
+    </nav>
+
+    {% bootstrap_messages %}
+
+    <div class="container mt-5">
+      {% block content %}{% endblock %}
+    </div>
+  </body>
+</html>

@@ -1,0 +1,12 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="robots" content="noindex, nofollow">
+    <script src="{% static "main.js" %}"></script>
+    <script>
+      window.destination = "{{ link.destination }}";
+    </script>
+  </head>
+</html>
