@@ -9,34 +9,45 @@ from inflection import underscore
 import json
 
 from .models import Link, Visit
-from .utils import is_bot, get_ray_id
+from .utils import is_bot, get_ray_id, deep_get
 
 
 def _save_data_from_request(request, link):
-    try:
-        user_agent = request.META["HTTP_USER_AGENT"]
-        client_ip, _is_routable = get_client_ip(request)
-        visit = Visit(
-            link=link,
-            user_agent=user_agent,
-            ip=client_ip,
-            is_bot=is_bot(user_agent),
-            city=request.ipinfo.city,
-            country=request.ipinfo.country,
-            hostname=request.ipinfo.hostname,
-            latitude=float(request.ipinfo.latitude),
-            longitude=float(request.ipinfo.longitude),
-        )
-        visit.save()
-        return visit
-    except Exception as e:
-        # something went wrong but we don't want to alert the visitor...
-        logging.error(
-            "Failed to save visit to {}. IP: {}, UA: {}".format(
-                link, client_ip, user_agent
-            )
-        )
-        logging.error(e)
+    # try:
+    user_agent = user_agent_parser.Parse(request.META["HTTP_USER_AGENT"])
+
+    language = request.META["HTTP_ACCEPT_LANGUAGE"]
+    client_ip, _is_routable = get_client_ip(request)
+    visit = Visit(
+        link=link,
+        user_agent=user_agent,
+        device_brand=deep_get(user_agent, ["device", "brand"]),
+        device_family=deep_get(user_agent, ["device", "family"]),
+        device_model=deep_get(user_agent, ["device", "model"]),
+        os_family=deep_get(user_agent, ["os", "family"]),
+        os_major=deep_get(user_agent, ["os", "major"]),
+        os_minor=deep_get(user_agent, ["os", "minor"]),
+        os_patch=deep_get(user_agent, ["os", "patch"]),
+        browser=deep_get(user_agent, ["user_agent", "family"]),
+        language=language,
+        ip=client_ip,
+        is_bot=is_bot(user_agent),
+        city=request.ipinfo.city,
+        country=request.ipinfo.country,
+        hostname=request.ipinfo.hostname,
+        latitude=float(request.ipinfo.latitude),
+        longitude=float(request.ipinfo.longitude),
+    )
+    visit.save()
+    return visit
+    # except Exception as e:
+    #     # something went wrong but we don't want to alert the visitor...
+    #     logging.error(
+    #         "Failed to save visit to {}. IP: {}, UA: {}".format(
+    #             link, client_ip, user_agent
+    #         )
+    #     )
+    #     logging.error(e)
 
 
 def _save_visit_minimal(request, link):
@@ -50,13 +61,11 @@ def _save_visit_extended(request, link):
     visit = _save_data_from_request(request, link)
     request.session["visit_pk"] = visit.pk
 
-    pretty_destination = link.destination.replace("https://", "").replace("http://", "")
     return render(
         request,
         "links/interstitial_blank.html",
         {
             "link": link,
-            "pretty_destination": pretty_destination,
             "ray_id": get_ray_id(),
             "visit": visit,
         },
@@ -72,8 +81,8 @@ def redirect_to_destination(request, short_id):
 
 
 def update_visit(request):
-    # if request.method != "POST":
-    #     raise Http404("Invalid method")
+    if request.method != "POST":
+        raise Http404("Invalid method")
 
     data = json.loads(request.body)
     visit = get_object_or_404(Visit, pk=request.session["visit_pk"])
@@ -95,11 +104,11 @@ def update_visit(request):
     for key in fields:
         model_field = underscore(key)
         setattr(visit, model_field, data[key])
-    # Handle screen resolutions separately
+    # Handle screen resolutions separately since they're not strings but lists
     visit.screen_x = data.get("screenResolution", [0, 0])[0]
     visit.screen_y = data.get("screenResolution", [0, 0])[1]
     visit.available_screen_x = data.get("availableScreenResolution", [0, 0])[0]
     visit.available_screen_y = data.get("availableScreenResolution", [0, 0])[1]
 
-    visit.save(update_fields=([underscore(f) for f in fields] + ['screen_x', 'screen_y', 'available_screen_x', 'available_screen_y']))
+    visit.save()
     return HttpResponse(status=204)  # HTTP No Content
