@@ -245,3 +245,4 @@ dmypy.json
 db.sqlite3
 .env
 .venv
+webpack-stats.json

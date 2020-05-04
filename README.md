@@ -6,6 +6,7 @@ A web app that lets you create short URLs that grab data on anyone who clicks th
 
 ## Developing
 
+- Set up environment variables: `cp .env.example .env` and modify as needed
 - Install dependencies:
 
 ```
