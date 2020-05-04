@@ -131,3 +131,5 @@ IPINFO_TOKEN = os.environ["IPINFO_TOKEN"]
 IPINFO_SETTINGS = {"cache_options": {"ttl": 60, "maxsize": 512}}
 # This can be used to filter out bots, but we want to see them
 IPINFO_FILTER = None
+
+WEBHOOK_URL = os.environ["WEBHOOK_URL"]

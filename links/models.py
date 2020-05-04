@@ -1,6 +1,8 @@
 from django.db import models
 from hashlib import sha256
 
+from .utils import post_webhook
+
 # Create your models here.
 class Link(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
@@ -82,6 +84,10 @@ class Visit(models.Model):
     touch_support = models.BooleanField(null=True)
 
     def save(self, *args, **kwargs):
+        if self._state.adding:
+            # New instance
+            post_webhook(self)
+
         fingerprint_fields = [f for f in [
             self.device_brand,
             self.device_family,
