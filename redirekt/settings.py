@@ -119,8 +119,12 @@ USE_TZ = True
 STATIC_URL = "/static/"
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static/dist"),
-    os.path.join(BASE_DIR, "static/open-iconic"),
+    os.path.join(BASE_DIR, "static/core"),
 ]
+
+LOGIN_URL = "/admin/login/"
+LOGIN_REDIRECT_URL = "/admin/"
+LOGOUT_REDIRECT_URL = "/admin/"
 
 # Other dependencies
 IPINFO_TOKEN = os.environ["IPINFO_TOKEN"]

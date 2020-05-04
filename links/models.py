@@ -11,7 +11,7 @@ class Link(models.Model):
     destination = models.URLField()
 
     def __str__(self):
-        return "{} ({})".format(self.short_id, self.destination)
+        return "{} ({})".format(self.title, self.destination)
 
     def get_absolute_url(self):
         from django.urls import reverse
