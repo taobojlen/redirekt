@@ -14,22 +14,28 @@ from .utils import is_bot, get_ray_id, deep_get
 
 def _save_data_from_request(request, link):
     # try:
-    user_agent = user_agent_parser.Parse(request.META["HTTP_USER_AGENT"])
+    user_agent = request.META["HTTP_USER_AGENT"]
+    user_agent_dict = user_agent_parser.Parse(user_agent)
 
     language = request.META["HTTP_ACCEPT_LANGUAGE"]
+    referrer = request.META["HTTP_REFERER"]
     client_ip, _is_routable = get_client_ip(request)
     visit = Visit(
         link=link,
         user_agent=user_agent,
-        device_brand=deep_get(user_agent, ["device", "brand"]),
-        device_family=deep_get(user_agent, ["device", "family"]),
-        device_model=deep_get(user_agent, ["device", "model"]),
-        os_family=deep_get(user_agent, ["os", "family"]),
-        os_major=deep_get(user_agent, ["os", "major"]),
-        os_minor=deep_get(user_agent, ["os", "minor"]),
-        os_patch=deep_get(user_agent, ["os", "patch"]),
-        browser=deep_get(user_agent, ["user_agent", "family"]),
         language=language,
+        referrer=referrer,
+        device_brand=deep_get(user_agent_dict, ["device", "brand"]),
+        device_family=deep_get(user_agent_dict, ["device", "family"]),
+        device_model=deep_get(user_agent_dict, ["device", "model"]),
+        os_family=deep_get(user_agent_dict, ["os", "family"]),
+        os_major=deep_get(user_agent_dict, ["os", "major"]),
+        os_minor=deep_get(user_agent_dict, ["os", "minor"]),
+        os_patch=deep_get(user_agent_dict, ["os", "patch"]),
+        browser_family=deep_get(user_agent_dict, ["user_agent", "family"]),
+        browser_major=deep_get(user_agent_dict, ["user_agent", "major"]),
+        browser_minor=deep_get(user_agent_dict, ["user_agent", "minor"]),
+        browser_patch=deep_get(user_agent_dict, ["user_agent", "patch"]),
         ip=client_ip,
         is_bot=is_bot(user_agent),
         city=request.ipinfo.city,

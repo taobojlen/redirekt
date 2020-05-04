@@ -30,35 +30,32 @@
   </div>
   <div class="row">
     {% if visits %}
-      <table class="table table-bordered">
+    <div class="table-responsive">
+      <table class="table table-bordered table-hover">
         <thead class="thead-light">
         <tr>
           <th>Timestamp</th>
-          <th>User agent</th>
+          <th>OS</th>
+          <th>Browser</th>
           <th>IP</th>
-          <th>Hostname</th>
           <th>Location</th>
-          <th>Coordinates</th>
+          <th>Referrer</th>
           <th>More</th>
           <th>Fingerprint</th>
         </tr>
       </thead>
       {% for visit in visits %}
-        {% if visit.is_bot %}
-          <tr class="table-secondary">
-        {% else %}
-          <tr>
-        {% endif %}
-          <td>{{ visit.created_at }}</td>
+        <tr class="{% if visit.is_bot %}table-secondary{% endif %}" data-toggle="modal" data-target="#modal{{ visit.pk }}" style="cursor: pointer;">
+          <td>{{ visit.created_at | date:"Y-m-d H:i" }}</td>
+          <td>{{ visit.os_family }} {% if visit.os_major %}{{ visit.os_major }}.{{ visit.os_minor|default_if_none:"y" }}.{{ visit.os_patch|default_if_none:"z" }}{% endif %} </td>
           {% if visit.is_bot %}
-            <td>{{ visit.user_agent }} <span class="badge badge-pill badge-secondary">Bot</span></td>
+            <td>{{ visit.browser_family }} {{ visit.browser_major }} <span class="badge badge-pill badge-secondary">Bot</span></td>
           {% else %}
-            <td>{{ visit.user_agent }}</td>
+            <td>{{ visit.browser_family }} {{ visit.browser_major }}</td>
           {% endif %}
           <td>{{ visit.ip }}</td>
-          <td>{{ visit.hostname }}</td>
           <td>{{ visit.city }}, {{ visit.country }}</td>
-          <td>{{ visit.latitude }}, {{ visit.longitude }}</td>
+          <td>{{ visit.referrer|default_if_none:"None" }}</td>
           <td>
             <button type="button" class="btn btn-sm btn-link" data-toggle="modal" data-target="#modal{{ visit.pk }}">
               More
@@ -77,6 +74,8 @@
               </div>
               <div class="modal-body">
                 <ul>
+                  <li><b>Hostname</b>: {{ visit.hostname }}</li>
+                  <li><b>Language</b>: {{ visit.language }}</li>
                   <li><b>Webdriver</b>: {{ visit.webdriver }}</li>
                   <li><b>Color depth</b>: {{ visit.color_depth }}</li>
                   <li><b>Pixel ratio</b>: {{ visit.pixel_ratio }}</li>
@@ -102,6 +101,7 @@
         </div>
       {% endfor %}
       </table>
+      </div>
     {% else %}
       <p>No visits yet.</p>
     {% endif %}
