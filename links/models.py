@@ -36,9 +36,9 @@ class Visit(models.Model):
 
     # Core information from the request
     link = models.ForeignKey(Link, on_delete=models.CASCADE)
-    ip = models.CharField(max_length=45)
+    ip = models.CharField(max_length=255)
     user_agent = models.CharField(max_length=4000, null=True)
-    language = models.CharField(max_length=10, null=True)
+    language = models.CharField(max_length=1000, null=True)
     referrer = models.CharField(max_length=1000, null=True)
     # From user agent
     device_brand = models.CharField(max_length=255, null=True)
@@ -59,7 +59,7 @@ class Visit(models.Model):
 
     # Details from ipinfo.io
     city = models.CharField(max_length=255, null=True)
-    country = models.CharField(max_length=2, null=True)
+    country = models.CharField(max_length=255, null=True)
     hostname = models.CharField(max_length=255, null=True)
     latitude = models.FloatField(null=True)
     longitude = models.FloatField(null=True)
