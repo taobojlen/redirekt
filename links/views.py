@@ -14,11 +14,11 @@ from .utils import is_bot, get_ray_id, deep_get
 
 def _save_data_from_request(request, link):
     # try:
-    user_agent = request.META["HTTP_USER_AGENT"]
+    user_agent = request.META.get("HTTP_USER_AGENT")
     user_agent_dict = user_agent_parser.Parse(user_agent)
 
-    language = request.META["HTTP_ACCEPT_LANGUAGE"]
-    referrer = request.META["HTTP_REFERER"]
+    language = request.META.get("HTTP_ACCEPT_LANGUAGE")
+    referrer = request.META.get("HTTP_REFERER")
     client_ip, _is_routable = get_client_ip(request)
     visit = Visit(
         link=link,
