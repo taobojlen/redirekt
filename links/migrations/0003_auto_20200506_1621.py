@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('links', '0002_visit_referrer'),
+        ("links", "0002_visit_referrer"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='visit',
-            name='language',
+            model_name="visit",
+            name="language",
             field=models.CharField(max_length=1000, null=True),
         ),
     ]

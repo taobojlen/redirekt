@@ -1,7 +1,7 @@
 # File created using '.gitignore Generator' for Visual Studio Code: https://bit.ly/vscode-gig
 
-# Created by https://www.gitignore.io/api/visualstudiocode,python,linux,node
-# Edit at https://www.gitignore.io/?templates=visualstudiocode,python,linux,node
+# Created by https://www.gitignore.io/api/visualstudiocode,python,node,linux,redis
+# Edit at https://www.gitignore.io/?templates=visualstudiocode,python,node,linux,redis
 
 ### Linux ###
 *~
@@ -227,6 +227,11 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
+### Redis ###
+# Ignore redis binary dump (dump.rdb) files
+
+*.rdb
+
 ### VisualStudioCode ###
 .vscode/*
 !.vscode/settings.json
@@ -238,7 +243,7 @@ dmypy.json
 # Ignore all local history of files
 .history
 
-# End of https://www.gitignore.io/api/visualstudiocode,python,linux,node
+# End of https://www.gitignore.io/api/visualstudiocode,python,node,linux,redis
 
 # Custom rules (everything added below won't be overriden by 'Generate .gitignore File' if you use 'Update' option)
 

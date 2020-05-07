@@ -1,9 +1,7 @@
 from django.db import models
 from hashlib import sha256
 
-from .utils import post_webhook
 
-# Create your models here.
 class Link(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -84,40 +82,42 @@ class Visit(models.Model):
     touch_support = models.BooleanField(null=True)
 
     def save(self, *args, **kwargs):
-        if self._state.adding:
-            # New instance
-            post_webhook(self)
-
-        fingerprint_fields = [f for f in [
-            self.device_brand,
-            self.device_family,
-            self.device_model,
-            self.os_family,
-            self.os_major,
-            self.os_minor,
-            self.os_patch,
-            self.browser_family,
-            # TODO: browser_major?
-            self.language,
-            self.webdriver,
-            self.color_depth,
-            self.pixel_ratio,
-            self.hardware_concurrency,
-            self.screen_x,
-            self.screen_y,
-            self.available_screen_x,
-            self.available_screen_y,
-            self.timezone,
-            self.session_storage,
-            self.local_storage,
-            self.indexed_db,
-            self.add_behavior,
-            self.open_database,
-            self.platform,
-            self.webgl_vendor_and_renderer,
-            self.touch_support,
-        ] if f is not None]
-        self.fingerprint = sha256(bytes("".join([str(f) for f in fingerprint_fields]), encoding="utf8")).hexdigest()
+        fingerprint_fields = [
+            f
+            for f in [
+                self.device_brand,
+                self.device_family,
+                self.device_model,
+                self.os_family,
+                self.os_major,
+                self.os_minor,
+                self.os_patch,
+                self.browser_family,
+                # TODO: browser_major?
+                self.language,
+                self.webdriver,
+                self.color_depth,
+                self.pixel_ratio,
+                self.hardware_concurrency,
+                self.screen_x,
+                self.screen_y,
+                self.available_screen_x,
+                self.available_screen_y,
+                self.timezone,
+                self.session_storage,
+                self.local_storage,
+                self.indexed_db,
+                self.add_behavior,
+                self.open_database,
+                self.platform,
+                self.webgl_vendor_and_renderer,
+                self.touch_support,
+            ]
+            if f is not None
+        ]
+        self.fingerprint = sha256(
+            bytes("".join([str(f) for f in fingerprint_fields]), encoding="utf8")
+        ).hexdigest()
         super().save(*args, **kwargs)  # Call the "real" save() method.
 
     class Meta:

@@ -6,18 +6,16 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('links', '0003_auto_20200506_1621'),
+        ("links", "0003_auto_20200506_1621"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='visit',
-            name='country',
+            model_name="visit",
+            name="country",
             field=models.CharField(max_length=255, null=True),
         ),
         migrations.AlterField(
-            model_name='visit',
-            name='ip',
-            field=models.CharField(max_length=255),
+            model_name="visit", name="ip", field=models.CharField(max_length=255),
         ),
     ]

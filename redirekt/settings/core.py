@@ -25,6 +25,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "bootstrap4",
+    "django_rq",
     "django_extensions",
     "links",
     "admin",
@@ -38,7 +39,6 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "ipinfo_django.middleware.IPinfo",
 ]
 
 ROOT_URLCONF = "redirekt.urls"
@@ -108,8 +108,14 @@ LOGOUT_REDIRECT_URL = "/admin/"
 
 # Other dependencies
 IPINFO_TOKEN = os.environ.get("IPINFO_TOKEN")
-IPINFO_SETTINGS = {"cache_options": {"ttl": 60, "maxsize": 512}}
-# This can be used to filter out bots, but we want to see them
-IPINFO_FILTER = None
-
 WEBHOOK_URL = os.environ.get("WEBHOOK_URL")
+
+RQ_QUEUES = {
+    "default": {
+        "HOST": "localhost",
+        "PORT": 6379,
+        "DB": 0,
+        "PASSWORD": os.environ.get("REDIS_PASSWORD"),
+        "DEFAULT_TIMEOUT": 360,
+    },
+}

@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('links', '0001_initial'),
+        ("links", "0001_initial"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='visit',
-            name='referrer',
+            model_name="visit",
+            name="referrer",
             field=models.CharField(max_length=1000, null=True),
         ),
     ]

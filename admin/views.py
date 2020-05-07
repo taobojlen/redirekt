@@ -33,7 +33,7 @@ def create_link(request):
 @login_required
 def link_detail(request, pk):
     link = get_object_or_404(Link, pk=pk)
-    visits = link.visit_set.order_by('-pk')
+    visits = link.visit_set.order_by("-pk")
     return render(request, "admin/view_link.html", {"link": link, "visits": visits})
 
 

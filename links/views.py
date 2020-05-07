@@ -38,11 +38,6 @@ def _save_data_from_request(request, link):
         browser_patch=deep_get(user_agent_dict, ["user_agent", "patch"]),
         ip=client_ip,
         is_bot=is_bot(user_agent),
-        city=request.ipinfo.city,
-        country=request.ipinfo.country,
-        hostname=request.ipinfo.hostname,
-        latitude=float(request.ipinfo.latitude),
-        longitude=float(request.ipinfo.longitude),
     )
     visit.save()
     return visit
@@ -70,11 +65,7 @@ def _save_visit_extended(request, link):
     return render(
         request,
         "links/interstitial_blank.html",
-        {
-            "link": link,
-            "ray_id": get_ray_id(),
-            "visit": visit,
-        },
+        {"link": link, "ray_id": get_ray_id(), "visit": visit,},
     )
 
 

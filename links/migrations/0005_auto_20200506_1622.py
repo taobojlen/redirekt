@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('links', '0004_auto_20200506_1621'),
+        ("links", "0004_auto_20200506_1621"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='visit',
-            name='fingerprint',
+            model_name="visit",
+            name="fingerprint",
             field=models.CharField(max_length=255),
         ),
     ]
