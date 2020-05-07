@@ -100,7 +100,8 @@ def update_visit(request):
     ]
     for key in fields:
         model_field = underscore(key)
-        setattr(visit, model_field, data[key])
+        value = None if str(data[key]).lower() == "not available" else data[key]
+        setattr(visit, model_field, value)
     # Handle screen resolutions separately since they're not strings but lists
     visit.screen_x = data.get("screenResolution", [0, 0])[0]
     visit.screen_y = data.get("screenResolution", [0, 0])[1]
