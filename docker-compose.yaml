@@ -1,0 +1,63 @@
+services:
+  db:
+    image: postgres
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=${DB_DATABASE}
+      - POSTGRES_USER=${DB_USERNAME}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis
+
+  web:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgres://${DB_USERNAME}:${DB_PASSWORD}@db:5432/${DB_DATABASE}
+      - SECRET_KEY=${SECRET_KEY}
+      - IPINFO_TOKEN=${IPINFO_TOKEN}
+      - WEBHOOK_URL=${WEBHOOK_URL}
+      - REDIS_HOST=redis
+      - HOSTNAME=localhost
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+
+  worker:
+    build: .
+    command: python manage.py rqworker
+    environment:
+      - DATABASE_URL=postgres://${DB_USERNAME}:${DB_PASSWORD}@db:5432/${DB_DATABASE}
+      - SECRET_KEY=${SECRET_KEY}
+      - IPINFO_TOKEN=${IPINFO_TOKEN}
+      - WEBHOOK_URL=${WEBHOOK_URL}
+      - REDIS_HOST=redis
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+
+  caddy:
+    image: caddy
+    environment:
+      - ADMIN_EMAIL=${ADMIN_EMAIL}
+      - HOSTNAME=${HOSTNAME}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+    depends_on:
+      - web
+
+volumes:
+  caddy_data:

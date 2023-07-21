@@ -9,12 +9,20 @@
     {
       "database": "${workspaceFolder}/db.sqlite3",
       "dialect": "SQLite",
-      "name": "redirekt"
+      "name": "redirekt",
+      "driver": "SQLite"
     },
     {
       "database": "${workspaceFolder}/db.sqlite3",
       "dialect": "SQLite",
-      "name": "redirekt"
+      "name": "redirekt",
+      "driver": "SQLite"
+    },
+    {
+      "previewLimit": 50,
+      "driver": "SQLite",
+      "name": "redirekt",
+      "database": "${workspaceFolder:redirekt}/db.sqlite3"
     }
   ],
   "sqltools.useNodeRuntime": true

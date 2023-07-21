@@ -1,6 +1,9 @@
 {% load static %}
+{% load django_vite %}
 <!DOCTYPE html>
 <html lang="en-US"><head>
+  {% vite_hmr_client %}
+  {% vite_asset 'frontend/index.ts' %}
   <meta charset="UTF-8">
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
@@ -26,7 +29,6 @@
     .attribution{font-size: 16px; line-height: 1.5;}
     .ray_id{display: block; margin-top: 8px;}
   </style>
-  <script src="{% static "main.js" %}"></script>
   <script>
     window.destination = "{{ link.destination }}";
   </script>

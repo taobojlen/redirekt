@@ -1,15 +1,12 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from django.views.decorators.csrf import csrf_exempt
-from django.http import HttpResponse, Http404
-
-from ua_parser import user_agent_parser
-from ipware import get_client_ip
-import logging
-from inflection import underscore
 import json
 
+from django.http import Http404, HttpResponse
+from django.shortcuts import get_object_or_404, redirect, render
+from ipware import get_client_ip
+from ua_parser import user_agent_parser
+
 from .models import Link, Visit
-from .utils import is_bot, get_ray_id, deep_get
+from .utils import deep_get, get_ray_id, is_bot
 
 
 def _save_data_from_request(request, link):
@@ -83,30 +80,11 @@ def update_visit(request):
 
     data = json.loads(request.body)
     visit = get_object_or_404(Visit, pk=request.session["visit_pk"])
-    fields = [
-        "webdriver",
-        "colorDepth",
-        "pixelRatio",
-        "hardwareConcurrency",
-        "timezone",
-        "sessionStorage",
-        "localStorage",
-        "indexedDb",
-        "addBehavior",
-        "openDatabase",
-        "platform",
-        "webglVendorAndRenderer",
-        "touchSupport",
-    ]
-    for key in fields:
-        model_field = underscore(key)
-        value = None if str(data[key]).lower() == "not available" else data[key]
-        setattr(visit, model_field, value)
-    # Handle screen resolutions separately since they're not strings but lists
-    visit.screen_x = data.get("screenResolution", [0, 0])[0]
-    visit.screen_y = data.get("screenResolution", [0, 0])[1]
-    visit.available_screen_x = data.get("availableScreenResolution", [0, 0])[0]
-    visit.available_screen_y = data.get("availableScreenResolution", [0, 0])[1]
 
+    visit.fingerprint_fields = data.get("fingerprint_fields", {})
+    visit.fingerprint = data.get("fingerprint", "")
+    visit.screen_x = data.get("width")
+    visit.screen_y = data.get("height")
     visit.save()
+
     return HttpResponse(status=204)  # HTTP No Content

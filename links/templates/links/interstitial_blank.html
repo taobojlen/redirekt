@@ -1,10 +1,9 @@
-
-{% load static %}
+{% load static %} {% load django_vite %}
 <!DOCTYPE html>
 <html>
   <head>
-    <meta name="robots" content="noindex, nofollow">
-    <script src="{% static "main.js" %}"></script>
+    {% vite_hmr_client %} {% vite_asset 'frontend/index.ts' %}
+    <meta name="robots" content="noindex, nofollow" />
     <script>
       window.destination = "{{ link.destination }}";
     </script>

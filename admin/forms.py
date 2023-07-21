@@ -1,8 +1,10 @@
-from django import forms
-
 import re
 
+from django import forms
+from django.core.exceptions import ValidationError
+
 from links.models import Link
+
 from .utils import get_random_short_id
 
 
@@ -30,11 +32,11 @@ class LinkForm(forms.ModelForm):
 
         if data in self.RESTRICTED_VALUES:
             raise ValidationError(
-                _("Invalid short ID: %(value)s"),
+                "Invalid short ID: %(value)s",
                 code="invalid",
                 params={"value": data},
             )
-        elif not re.match("^\w+$", data):
+        elif not re.match(r"^\w+$", data):
             raise ValidationError(
                 _("Invalid short ID: %(value)s"),
                 code="invalid",

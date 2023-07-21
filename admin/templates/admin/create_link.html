@@ -1,14 +1,11 @@
 {% extends "admin/base.html" %}
-{% load bootstrap4 %}
 
 {% block content %}
   <form action="/admin/create/" method="post">
       {% csrf_token %}
-      {% bootstrap_form form %}
-      {% buttons %}
-        <button type="submit" class="btn btn-primary">
-          Create link
-        </button>
-      {% endbuttons %}
+      {{ form }}
+      <button type="submit" class="btn btn-primary">
+        Create link
+      </button>
   </form>
 {% endblock %}

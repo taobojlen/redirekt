@@ -24,7 +24,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "bootstrap4",
+    "django_vite",
     "django_rq",
     "django_extensions",
     "links",
@@ -33,6 +33,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -92,16 +93,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.0/howto/static-files/
-
-STATIC_URL = "/static/"
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static/dist"),
-    os.path.join(BASE_DIR, "static/core"),
-]
-
 LOGIN_URL = "/admin/login/"
 LOGIN_REDIRECT_URL = "/admin/"
 LOGOUT_REDIRECT_URL = "/admin/"
@@ -112,10 +103,21 @@ WEBHOOK_URL = os.environ.get("WEBHOOK_URL")
 
 RQ_QUEUES = {
     "default": {
-        "HOST": "localhost",
+        "HOST": os.environ.get("REDIS_HOST", "localhost"),
         "PORT": 6379,
         "DB": 0,
-        "PASSWORD": os.environ.get("REDIS_PASSWORD"),
         "DEFAULT_TIMEOUT": 360,
     },
 }
+
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+DJANGO_VITE_ASSETS_PATH = os.path.join(BASE_DIR, "frontend", "dist")
+STATIC_ROOT = "static/"
+STATIC_URL = "/static/"
+STATICFILES_DIRS = [
+    os.path.join(STATIC_ROOT, "static/core"),
+    DJANGO_VITE_ASSETS_PATH
+]
+
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
